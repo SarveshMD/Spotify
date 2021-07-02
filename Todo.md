@@ -22,6 +22,7 @@
     - Analyze Library
     - Analyze User Data
     - Analyze Follow Data
+    - Create SQLite File with analyzed data
 2. Compare things
     - Streaming History
     - Playlists
