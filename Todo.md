@@ -1,20 +1,20 @@
 # Project - Visualize Spotify Data
 
-## Resources we have :
+## Resources we have
 
-#### ( Ordered by the amount of usable data they contain )
+### ( Ordered by the amount of useful data they contain )
 
-1.  Playlist1.json
-2.  StreamingHistory0.json
-3.  YourLibrary.json
-4.  SearchQueries.json
-5.  Userdata.json
-6.  Follow.json
-7.  Inferences.json
-8.  Identity.json
-9.  Payments.json
+1. Playlist1.json
+2. StreamingHistory0.json
+3. YourLibrary.json
+4. SearchQueries.json
+5. Userdata.json
+6. Follow.json
+7. Inferences.json
+8. Identity.json
+9. Payments.json
 
-## What we're going to do :
+## What we're going to do
 
 1. Analyze and parse the files
     - Analyze Streaming History
