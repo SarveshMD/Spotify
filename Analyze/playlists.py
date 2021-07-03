@@ -27,9 +27,10 @@ for playlist in playlists:
         albumName = item['albumName']
         trackUri = item['trackUri']
         songsArtistsCursor.execute("SELECT id from Artists WHERE artistName IS ( ? )", (artistName, ) )
-        artistId = cursor.fetchone()[0]
+        artistId = songsArtistsCursor.fetchone()[0]
         songsArtistsCursor.execute("SELECT id from Songs WHERE trackName IS ( ? )", (trackName, ) )
-        trackId = cursor.fetchone()[0]
-        cursor.execute(f"INSERT INTO {name} (trackName, artistName, albumName, trackUri) VALUES (?, ?, ?, ?)", (trackName, artistName, albumName, trackUri, ))
+        trackId = songsArtistsCursor.fetchone()[0]
+        print((trackId, artistId, albumName, trackUri))
+        cursor.execute(f"INSERT INTO {name} (trackId, artistId, albumName, trackUri) VALUES (?, ?, ?, ?)", (trackId, artistId, albumName, trackUri, ))
         connection.commit()
     connection.commit()
