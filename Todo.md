@@ -32,3 +32,9 @@
     - Get the most frequently played song at a particular time
     - Get the most favorite artist
     - Get the most favorite song
+
+## How do we start
+
+1. We'll create an sqlite file to store our streaming history.
+2. We'll create another sqlite file with a table for each playlist and add all the playlists to it.
+3. We'll create a sqlite for all songs and artists, it will contain two tables, artists and songs.
