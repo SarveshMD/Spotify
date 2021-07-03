@@ -1,9 +1,9 @@
 import json
 import sqlite3
 
-connection = sqlite3.connect("playlists.sqlite")
+connection = sqlite3.connect("../Databases/playlists.sqlite")
 cursor = connection.cursor()
-playlists = json.loads(open("MySpotifyData/Playlist1.json").read())['playlists']
+playlists = json.loads(open("../MySpotifyData/Playlist1.json").read())['playlists']
 
 for playlist in playlists:
     name = playlist['name'].replace(" ", "_")

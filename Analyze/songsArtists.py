@@ -1,10 +1,10 @@
 import json
 import sqlite3
 
-streamingHistory = json.loads(open("MySpotifyData/StreamingHistory0.json").read())
-playlists = json.loads(open("MySpotifyData/Playlist1.json").read())['playlists']
+streamingHistory = json.loads(open("../MySpotifyData/StreamingHistory0.json").read())
+playlists = json.loads(open("../MySpotifyData/Playlist1.json").read())['playlists']
 
-connection = sqlite3.connect("songsArtists.sqlite")
+connection = sqlite3.connect("../Databases/songsArtists.sqlite")
 cursor = connection.cursor()
 
 cursor.executescript('''

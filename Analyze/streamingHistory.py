@@ -1,9 +1,9 @@
 import json
 import sqlite3
 
-connection = sqlite3.connect("streamingHistory.sqlite")
+connection = sqlite3.connect("../Databases/streamingHistory.sqlite")
 cursor = connection.cursor()
-streamingHistory = json.loads(open("MySpotifyData/StreamingHistory0.json").read())
+streamingHistory = json.loads(open("../MySpotifyData/StreamingHistory0.json").read())
 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS streamingHistory
