@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Artists
 connection.commit()
 
 playlistSongs = list()
+historySongs = list()
 allSongs = list()
 artists = list()
 artistWrittenToFile = list()
@@ -42,6 +43,13 @@ for playlist in playlists:
             playlistSongs.append(trackName)
         if not (artistName in artists):
             artists.append(artistName)
+
+for song in streamingHistory:
+    trackName = song['trackName']
+    artistName = song['artistName']
+    if not (trackName in historySongs) and not (trackName in playlistSongs):
+        historySongs.append(trackName)
+        allSongs.append({'trackName': trackName, 'artistName': artistName, 'albumName': None, 'trackUri': None})
 
 artistPointCreated = list()
 for song in allSongs:
