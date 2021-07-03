@@ -11,54 +11,60 @@ cursor.executescript('''
 CREATE TABLE IF NOT EXISTS Songs
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-    name Text,
+    trackName Text UNIQUE,
     artistId INTEGER,
-    album Text,
-    uri Text
+    albumName Text,
+    trackUri Text UNIQUE
 );
 CREATE TABLE IF NOT EXISTS Artists
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-    name Text
+    artistName Text UNIQUE,
+    NOSongsInPlaylist Integer
 )
 ''')
+connection.commit()
 
-historySongs = list()
 playlistSongs = list()
-notInPlaylist = list()
-notInHistory = list()
-
-for song in streamingHistory:
-    # endTime = song['endTime']
-    # artistName = song['artistName']
-    trackName = song['trackName']
-    # msPlayed = song['msPlayed']
-    if not (trackName in historySongs):
-        historySongs.append(trackName)
+allSongs = list()
+artists = list()
+artistWrittenToFile = list()
+artistPoint = {}
 
 for playlist in playlists:
-    # name = playlist['name'].replace(" ", "_")
     items = playlist['items']
     for item in items:
         item = item['track']
         trackName = item['trackName']
-        # artistName = item['artistName']
-        # albumName = item['albumName']
-        # trackUri = item['trackUri']
+        artistName = item['artistName']
         if not (trackName in playlistSongs):
+            allSongs.append(item)
             playlistSongs.append(trackName)
+        if not (artistName in artists):
+            artists.append(artistName)
 
-# print("Playlist songs: \n", playlistSongs)
-# print("\n\n")
-# print("History songs: \n", historySongs)
+artistPointCreated = list()
+for song in allSongs:
+    artistName = song['artistName']
+    if artistName not in artistPointCreated:
+        artistPoint[artistName] = 0
+        artistPointCreated.append(artistName)
+    artistPoint[artistName] += 1
 
-for song in historySongs:
-    if song not in playlistSongs:
-        for playlistSong in playlistSongs:
-            if song[:10] in playlistSong:
-                print(f"{playlistSong}\n{song}\n")
-
-# for song in playlistSongs:
-#     if song not in historySongs:
-#         notInHistory.append(song)
-#         print(song)
+for song in allSongs:
+    trackName = song['trackName']
+    artistName = song['artistName']
+    albumName = song['albumName']
+    trackUri = song['trackUri']
+    if artistName not in artistWrittenToFile:
+        cursor.execute('''
+        INSERT INTO Artists ( artistName, NOSongsInPlaylist ) VALUES ( ?, ? )
+        ''', ( artistName, artistPoint[artistName] ) )
+        artistWrittenToFile.append(artistName)
+    cursor.execute("SELECT id from Artists WHERE artistName IS ( ? )", (artistName, ) )
+    artistId = cursor.fetchone()[0]
+    cursor.execute('''
+    INSERT INTO Songs
+    (trackName, artistId, albumName, trackUri) VALUES ( ?, ?, ?, ? )
+    ''', (trackName, artistId , albumName, trackUri))
+    connection.commit()
