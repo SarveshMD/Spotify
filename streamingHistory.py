@@ -20,9 +20,9 @@ for song in streamingHistory:
     artistName = song['artistName']
     trackName = song['trackName']
     msPlayed = song['msPlayed']
-    print("In the loop")
     cursor.execute("INSERT INTO streamingHistory (endTime, artistName, trackName, msPlayed) VALUES (?, ?, ?, ?)", (endTime, artistName, trackName, msPlayed, ))
     connection.commit()
+
 ## Sample data from StreamingHistory0.json
 # [
 #   {
