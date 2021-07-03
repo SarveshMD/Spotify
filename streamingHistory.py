@@ -22,13 +22,3 @@ for song in streamingHistory:
     msPlayed = song['msPlayed']
     cursor.execute("INSERT INTO streamingHistory (endTime, artistName, trackName, msPlayed) VALUES (?, ?, ?, ?)", (endTime, artistName, trackName, msPlayed, ))
     connection.commit()
-
-## Sample data from StreamingHistory0.json
-# [
-#   {
-#     "endTime" : "2020-11-21 05:24",
-#     "artistName" : "D. Imman",
-#     "trackName" : "Ovvundraai Thirudugiraai",
-#     "msPlayed" : 285190
-#   }
-# ]

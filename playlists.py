@@ -27,37 +27,3 @@ for playlist in playlists:
         cursor.execute(f"INSERT INTO {name} (trackName, artistName, albumName, trackUri) VALUES (?, ?, ?, ?)", (trackName, artistName, albumName, trackUri, ))
         connection.commit()
     connection.commit()
-
-# Sample data from Playlist1.json
-# {
-#   "playlists": [
-#     {
-#       "name": "Energy",
-#       "lastModifiedDate": "2021-06-07",
-#       "items": [
-#         {
-#           "track": {
-#             "trackName": "Thangamey",
-#             "artistName": "Anirudh Ravichander",
-#             "albumName": "Naanum Rowdy Dhaan (Original Motion Picture Soundtrack)",
-#             "trackUri": "spotify:track:62KDpF0Hv7KJLZrrKXsz8r"
-#           },
-#           "episode": null,
-#           "localTrack": null
-#         },
-#         {
-#           "track": {
-#             "trackName": "En Iniya Thanimaye",
-#             "artistName": "D. Imman",
-#             "albumName": "Teddy",
-#             "trackUri": "spotify:track:5z7IJoDX9iOavWOS1Y8zOy"
-#           },
-#           "episode": null,
-#           "localTrack": null
-#         }
-#       ],
-#       "description": null,
-#       "numberOfFollowers": 0
-#     }
-#   ]
-# }
