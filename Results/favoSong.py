@@ -49,7 +49,8 @@ for trackId, totalMsPlayed in summaryFromTable:
     minutes = int(convertedPlayed[1])
     seconds = float(convertedPlayed[2])
     table.append([i, trackName, hours, minutes, f"{seconds:.2f}"])
-table = tabulate(table, headers=['S.No', 'Track Name', 'Hours', 'Minutes', 'Seconds'])
+table = tabulate(table, headers=['S.No', 'Track Name', 'Hours', 'Minutes', 'Seconds'], tablefmt="pipe")
+print()
 print(table)
 # maxMsPlayed = None
 # minMsPlayed = None
