@@ -7,7 +7,12 @@ songsArtistsConn = sqlite3.connect("../Databases/songsArtists.sqlite")
 songsArtistsCursor = songsArtistsConn.cursor()
 
 summary = {}
-
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS summary (
+    trackId INTEGER UNIQUE,
+    totalMsPlayed INTEGER
+    )
+''')
 cursor.execute('SELECT * FROM streamingHistory')
 streamingHistory = cursor.fetchall()
 for item in streamingHistory:
@@ -22,31 +27,35 @@ for item in streamingHistory:
 
 # print(json.dumps({int(key):summary[key] for key in summary.keys()}, indent=4, sort_keys=True))
 
-maxMsPlayed = None
-minMsPlayed = None
-maxPlayedTrackId = int()
-minPlayedTrackId = int()
+for trackId, totalMsPlayed in summary.items():
+    cursor.execute("INSERT OR IGNORE INTO summary (trackId, totalMsPlayed) VALUES (?, ?)", (trackId, totalMsPlayed))
+connection.commit()
 
-for trackId,msPlayed in summary.items() :
-    if minMsPlayed is None or msPlayed <= minMsPlayed:
-        minMsPlayed = msPlayed
-        minPlayedTrackId = trackId
-    elif maxMsPlayed is None or msPlayed >= maxMsPlayed:
-        maxMsPlayed = msPlayed
-        maxPlayedTrackId = trackId
+# maxMsPlayed = None
+# minMsPlayed = None
+# maxPlayedTrackId = int()
+# minPlayedTrackId = int()
 
-songsArtistsCursor.execute(f'''
-SELECT trackName FROM Songs WHERE id IS {maxPlayedTrackId}
-''')
-maxPlayedTrackName = songsArtistsCursor.fetchone()[0]
+# for trackId,msPlayed in summary.items() :
+#     if minMsPlayed is None or msPlayed <= minMsPlayed:
+#         minMsPlayed = msPlayed
+#         minPlayedTrackId = trackId
+#     elif maxMsPlayed is None or msPlayed >= maxMsPlayed:
+#         maxMsPlayed = msPlayed
+#         maxPlayedTrackId = trackId
 
-songsArtistsCursor.execute(f'''
-SELECT trackName FROM Songs WHERE id IS {minPlayedTrackId}
-''')
-minPlayedTrackName = songsArtistsCursor.fetchone()[0]
+# songsArtistsCursor.execute(f'''
+# SELECT trackName FROM Songs WHERE id IS {maxPlayedTrackId}
+# ''')
+# maxPlayedTrackName = songsArtistsCursor.fetchone()[0]
 
-print(f"Most Favorite Song: {maxPlayedTrackName}\nSeconds Played: {maxMsPlayed}\n")
-print(f"Least Favorite Song: {minPlayedTrackName}\nSeconds Played: {minMsPlayed}\n")
+# songsArtistsCursor.execute(f'''
+# SELECT trackName FROM Songs WHERE id IS {minPlayedTrackId}
+# ''')
+# minPlayedTrackName = songsArtistsCursor.fetchone()[0]
+
+# print(f"Most Favorite Song: {maxPlayedTrackName}\nSeconds Played: {maxMsPlayed}\n")
+# print(f"Least Favorite Song: {minPlayedTrackName}\nSeconds Played: {minMsPlayed}\n")
 
 # Get the results based on length of listening
 #    Most favorite Song
