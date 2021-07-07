@@ -42,7 +42,7 @@ i = 0
 table = list()
 for trackId, totalMsPlayed in summaryFromTable:
     i += 1
-    songsArtistsCursor.execute(f'''SELECT trackName FROM Songs WHERE id IS {trackId}''')
+    songsArtistsCursor.execute(f'SELECT trackName FROM Songs WHERE id IS {trackId}')
     trackName = songsArtistsCursor.fetchone()[0]
     convertedPlayed = str(timedelta(milliseconds=totalMsPlayed)).split(":")
     hours = int(convertedPlayed[0])
@@ -52,38 +52,3 @@ for trackId, totalMsPlayed in summaryFromTable:
 table = tabulate(table, headers=['S.No', 'Track Name', 'Hours', 'Minutes', 'Seconds'], tablefmt="pipe")
 print()
 print(table)
-# maxMsPlayed = None
-# minMsPlayed = None
-# maxPlayedTrackId = int()
-# minPlayedTrackId = int()
-
-# for trackId,msPlayed in summary.items() :
-#     if minMsPlayed is None or msPlayed <= minMsPlayed:
-#         minMsPlayed = msPlayed
-#         minPlayedTrackId = trackId
-#     elif maxMsPlayed is None or msPlayed >= maxMsPlayed:
-#         maxMsPlayed = msPlayed
-#         maxPlayedTrackId = trackId
-
-# songsArtistsCursor.execute(f'''
-# SELECT trackName FROM Songs WHERE id IS {maxPlayedTrackId}
-# ''')
-# maxPlayedTrackName = songsArtistsCursor.fetchone()[0]
-
-# songsArtistsCursor.execute(f'''
-# SELECT trackName FROM Songs WHERE id IS {minPlayedTrackId}
-# ''')
-# minPlayedTrackName = songsArtistsCursor.fetchone()[0]
-
-# print(f"Most Favorite Song: {maxPlayedTrackName}\nSeconds Played: {maxMsPlayed}\n")
-# print(f"Least Favorite Song: {minPlayedTrackName}\nSeconds Played: {minMsPlayed}\n")
-
-# Get the results based on length of listening
-#    Most favorite Song
-#    Most favorite Artist
-
-# Sample Data :
-# [
-# ('2020-11-21 05:24', '43', '2', 285190),
-# ('2020-11-21 05:24', '43', '2', 285190)
-# ]
