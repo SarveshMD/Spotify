@@ -11,9 +11,8 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS streamingHistory
     (
     endTime Date,
-    trackId Text,
-    artistId Text,
-    msPlayed Integer
+    trackId INTEGER,
+    msPlayed INTEGER
     )
 ''')
 
@@ -27,5 +26,5 @@ for song in streamingHistory:
     songsArtistsCursor.execute("SELECT id from Songs WHERE trackName IS ( ? )", (trackName, ) )
     trackId = songsArtistsCursor.fetchone()[0]
     print((endTime, trackId, artistId, msPlayed))
-    cursor.execute("INSERT INTO streamingHistory (endTime, trackId, artistId, msPlayed) VALUES (?, ?, ?, ?)", (endTime, trackId, artistId, msPlayed, ))
+    cursor.execute("INSERT INTO streamingHistory (endTime, trackId, msPlayed) VALUES (?, ?, ?)", (endTime, trackId, msPlayed, ))
     connection.commit()
