@@ -11,16 +11,20 @@ cursor.executescript('''
 CREATE TABLE IF NOT EXISTS Songs
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-    trackName Text UNIQUE,
+    trackName TEXT UNIQUE,
     artistId INTEGER,
-    albumName Text,
-    trackUri Text UNIQUE
+    albumId INTEGER,
+    trackUri TEXT UNIQUE
 );
 CREATE TABLE IF NOT EXISTS Artists
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-    artistName Text UNIQUE,
-    NOSongsInPlaylist Integer
+    artistName TEXT UNIQUE
+);
+CREATE TABLE IF NOT EXISTS Albums
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+    albumName TEXT Unique
 )
 ''')
 connection.commit()
@@ -30,7 +34,8 @@ historySongs = list()
 allSongs = list()
 artists = list()
 artistWrittenToFile = list()
-artistPoint = {}
+albums = list()
+albumWrittenToFile = list()
 
 for playlist in playlists:
     items = playlist['items']
@@ -51,28 +56,24 @@ for song in streamingHistory:
         historySongs.append(trackName)
         allSongs.append({'trackName': trackName, 'artistName': artistName, 'albumName': None, 'trackUri': None})
 
-artistPointCreated = list()
-for song in allSongs:
-    artistName = song['artistName']
-    if artistName not in artistPointCreated:
-        artistPoint[artistName] = 0
-        artistPointCreated.append(artistName)
-    artistPoint[artistName] += 1
-
 for song in allSongs:
     trackName = song['trackName']
     artistName = song['artistName']
     albumName = song['albumName']
     trackUri = song['trackUri']
-    if artistName not in artistWrittenToFile:
-        cursor.execute('''
-        INSERT INTO Artists ( artistName, NOSongsInPlaylist ) VALUES ( ?, ? )
-        ''', ( artistName, artistPoint[artistName] ) )
-        artistWrittenToFile.append(artistName)
+    cursor.execute('''
+    INSERT OR IGNORE INTO Artists ( artistName ) VALUES ( ? )
+    ''', ( artistName, ) )
+    cursor.execute('''
+    INSERT OR IGNORE INTO Albums ( albumName ) VALUES ( ? )
+    ''', ( albumName, ))
     cursor.execute("SELECT id from Artists WHERE artistName IS ( ? )", (artistName, ) )
     artistId = cursor.fetchone()[0]
+    cursor.execute("SELECT id from Albums WHERE albumName IS ( ? )", (albumName, ) )
+    albumId = cursor.fetchone()[0]
     cursor.execute('''
-    INSERT INTO Songs
-    (trackName, artistId, albumName, trackUri) VALUES ( ?, ?, ?, ? )
-    ''', (trackName, artistId , albumName, trackUri))
-    connection.commit()
+    INSERT OR IGNORE INTO Songs
+    (trackName, artistId, albumId, trackUri) VALUES ( ?, ?, ?, ? )
+    ''', (trackName, artistId , albumId, trackUri))
+    print(trackName, artistId , albumId, trackUri)
+connection.commit()
