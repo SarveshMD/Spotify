@@ -7,29 +7,6 @@ cursor = connection.cursor()
 songsArtistsConn = sqlite3.connect("../Databases/songsArtists.sqlite")
 songsArtistsCursor = songsArtistsConn.cursor()
 
-summary = {}
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS songSummary (
-    trackId INTEGER UNIQUE,
-    totalMsPlayed INTEGER
-    )
-''')
-cursor.execute('SELECT * FROM streamingHistory')
-streamingHistory = cursor.fetchall()
-for item in streamingHistory:
-    endTime = item[0]
-    trackId = item[1]
-    artistId = item[2]
-    msPlayed = item[3]
-    if trackId not in summary.keys():
-        summary[trackId] =  msPlayed
-    else :
-        summary[trackId] += msPlayed
-
-for trackId, totalMsPlayed in summary.items():
-    cursor.execute("INSERT OR IGNORE INTO songSummary (trackId, totalMsPlayed) VALUES (?, ?)", (trackId, totalMsPlayed))
-connection.commit()
-
 cursor.execute("SELECT * FROM songSummary ORDER BY totalMsPlayed DESC")
 summaryFromTable = cursor.fetchall()
 
